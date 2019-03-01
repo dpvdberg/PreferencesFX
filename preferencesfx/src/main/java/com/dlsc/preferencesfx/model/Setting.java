@@ -44,15 +44,15 @@ public class Setting<F extends Field, P extends Property> {
       LoggerFactory.getLogger(Setting.class.getName());
 
   public static final String MARKED_STYLE_CLASS = "simple-control-marked";
-  private String description;
+  private String title;
   private F field;
   private P value;
   private boolean marked = false;
   private final EventHandler<MouseEvent> unmarker = event -> unmark();
   private final StringProperty breadcrumb = new SimpleStringProperty("");
 
-  private Setting(String description, F field, P value) {
-    this.description = description;
+  private Setting(String title, F field, P value) {
+    this.title = title;
     this.field = field;
     this.value = value;
   }
@@ -60,15 +60,15 @@ public class Setting<F extends Field, P extends Property> {
   /**
    * Constructs a setting of {@link Boolean} type, which is represented by a {@link ToggleControl}.
    *
-   * @param description the title of this setting
+   * @param title the title of this setting
    * @param property    to be bound, saved / loaded and used for undo / redo
    * @return the constructed setting
    */
-  public static Setting of(String description, BooleanProperty property) {
+  public static Setting of(String title, BooleanProperty property) {
     return new Setting<>(
-        description,
+        title,
         Field.ofBooleanType(property)
-            .label(description)
+            .label(title)
             .render(new ToggleControl()),
         property
     );
@@ -77,15 +77,15 @@ public class Setting<F extends Field, P extends Property> {
   /**
    * Constructs a setting of {@link Integer} type, which is represented by a {@link TextField}.
    *
-   * @param description the title of this setting
+   * @param title the title of this setting
    * @param property    to be bound, saved / loaded and used for undo / redo
    * @return the constructed setting
    */
-  public static Setting of(String description, IntegerProperty property) {
+  public static Setting of(String title, IntegerProperty property) {
     return new Setting<>(
-        description,
+        title,
         Field.ofIntegerType(property)
-            .label(description)
+            .label(title)
             .render(new SimpleIntegerControl()),
         property);
   }
@@ -93,15 +93,15 @@ public class Setting<F extends Field, P extends Property> {
   /**
    * Constructs a setting of {@link Double} type, which is represented by a {@link TextField}.
    *
-   * @param description the title of this setting
+   * @param title the title of this setting
    * @param property    to be bound, saved / loaded and used for undo / redo
    * @return the constructed setting
    */
-  public static Setting of(String description, DoubleProperty property) {
+  public static Setting of(String title, DoubleProperty property) {
     return new Setting<>(
-        description,
+        title,
         Field.ofDoubleType(property)
-            .label(description)
+            .label(title)
             .render(new SimpleDoubleControl()),
         property);
   }
@@ -109,7 +109,7 @@ public class Setting<F extends Field, P extends Property> {
   /**
    * Constructs a setting of {@link Double} type, which is represented by a {@link Slider}.
    *
-   * @param description the title of this setting
+   * @param title the title of this setting
    * @param property    to be bound, saved / loaded and used for undo / redo
    * @param min         minimum value of the {@link Slider}
    * @param max         maximum value of the {@link Slider}
@@ -117,11 +117,11 @@ public class Setting<F extends Field, P extends Property> {
    * @return the constructed setting
    */
   public static Setting of(
-      String description, DoubleProperty property, double min, double max, int precision) {
+      String title, DoubleProperty property, double min, double max, int precision) {
     return new Setting<>(
-        description,
+        title,
         Field.ofDoubleType(property)
-            .label(description)
+            .label(title)
             .render(new DoubleSliderControl(min, max, precision)),
         property);
   }
@@ -129,17 +129,17 @@ public class Setting<F extends Field, P extends Property> {
   /**
    * Constructs a setting of {@link Integer} type, which is represented by a {@link Slider}.
    *
-   * @param description the title of this setting
+   * @param title the title of this setting
    * @param property    to be bound, saved / loaded and used for undo / redo
    * @param min         minimum value of the {@link Slider}
    * @param max         maximum value of the {@link Slider}
    * @return the constructed setting
    */
-  public static Setting of(String description, IntegerProperty property, int min, int max) {
+  public static Setting of(String title, IntegerProperty property, int min, int max) {
     return new Setting<>(
-        description,
+        title,
         Field.ofIntegerType(property)
-            .label(description)
+            .label(title)
             .render(new IntegerSliderControl(min, max)),
         property);
   }
@@ -147,15 +147,15 @@ public class Setting<F extends Field, P extends Property> {
   /**
    * Constructs a setting of {@link String} type, which is represented by a {@link TextField}.
    *
-   * @param description the title of this setting
+   * @param title the title of this setting
    * @param property    to be bound, saved / loaded and used for undo / redo
    * @return the constructed setting
    */
-  public static Setting of(String description, StringProperty property) {
+  public static Setting of(String title, StringProperty property) {
     return new Setting<>(
-        description,
+        title,
         Field.ofStringType(property)
-            .label(description)
+            .label(title)
             .render(new SimpleTextControl()),
         property);
   }
@@ -163,7 +163,7 @@ public class Setting<F extends Field, P extends Property> {
   /**
    * Creates a combobox with single selection.
    *
-   * @param description the title of this setting
+   * @param title the title of this setting
    * @param items       the items which are possible to choose in the combobox, which are shown
    *                    in their {@link #toString()} representation
    * @param selection   the currently selected item of the combobox to be bound, saved / loaded and
@@ -172,11 +172,11 @@ public class Setting<F extends Field, P extends Property> {
    * @return the constructed setting
    */
   public static <P> Setting of(
-      String description, ListProperty<P> items, ObjectProperty<P> selection) {
+      String title, ListProperty<P> items, ObjectProperty<P> selection) {
     return new Setting<>(
-        description,
+        title,
         Field.ofSingleSelectionType(items, selection)
-            .label(description)
+            .label(title)
             .render(new SimpleComboBoxControl<>()),
         selection);
   }
@@ -184,7 +184,7 @@ public class Setting<F extends Field, P extends Property> {
   /**
    * Creates a combobox with single selection.
    *
-   * @param description the title of this setting
+   * @param title the title of this setting
    * @param items       the items which are possible to choose in the combobox, which are shown
    *                    in their {@link #toString()} representation
    * @param selection   the currently selected item of the combobox to be bound, saved / loaded and
@@ -193,11 +193,11 @@ public class Setting<F extends Field, P extends Property> {
    * @return the constructed setting
    */
   public static <P> Setting of(
-      String description, ObservableList<P> items, ObjectProperty<P> selection) {
+      String title, ObservableList<P> items, ObjectProperty<P> selection) {
     return new Setting<>(
-        description,
+        title,
         Field.ofSingleSelectionType(new SimpleListProperty<>(items), selection)
-            .label(description)
+            .label(title)
             .render(new SimpleComboBoxControl<>()),
         selection);
   }
@@ -206,7 +206,7 @@ public class Setting<F extends Field, P extends Property> {
    * Creates a combobox with multiselection.
    * At least one element has to be selected at all times.
    *
-   * @param description the title of this setting
+   * @param title the title of this setting
    * @param items       the items which are possible to choose in the combobox, which are shown
    *                    in their {@link #toString()} representation
    * @param selections  the currently selected item(s) of the combobox to be bound, saved / loaded
@@ -215,11 +215,11 @@ public class Setting<F extends Field, P extends Property> {
    * @return the constructed setting
    */
   public static <P> Setting of(
-      String description, ListProperty<P> items, ListProperty<P> selections) {
+      String title, ListProperty<P> items, ListProperty<P> selections) {
     return new Setting<>(
-        description,
+        title,
         Field.ofMultiSelectionType(items, selections)
-            .label(description)
+            .label(title)
             .render(new SimpleListViewControl<>()),
         selections);
   }
@@ -228,7 +228,7 @@ public class Setting<F extends Field, P extends Property> {
    * Creates a combobox with multiselection.
    * At least one element has to be selected at all times.
    *
-   * @param description the title of this setting
+   * @param title the title of this setting
    * @param items       the items which are possible to choose in the combobox, which are shown
    *                    in their {@link #toString()} representation
    * @param selections  the currently selected item(s) of the combobox to be bound, saved / loaded
@@ -237,11 +237,11 @@ public class Setting<F extends Field, P extends Property> {
    * @return the constructed setting
    */
   public static <P> Setting of(
-      String description, ObservableList<P> items, ListProperty<P> selections) {
+      String title, ObservableList<P> items, ListProperty<P> selections) {
     return new Setting<>(
-        description,
+        title,
         Field.ofMultiSelectionType(new SimpleListProperty<>(items), selections)
-            .label(description)
+            .label(title)
             .render(new SimpleListViewControl<>()),
         selections);
   }
@@ -249,16 +249,16 @@ public class Setting<F extends Field, P extends Property> {
   /**
    * Creates a setting of a custom defined field.
    *
-   * @param description the title of this setting
+   * @param title the title of this setting
    * @param field       custom Field object from FormsFX
    * @param property    to be bound, saved / loaded and used for undo / redo
    * @return the constructed setting
    */
   public static <F extends Field<F>, P extends Property> Setting of(
-      String description, F field, P property) {
+      String title, F field, P property) {
     return new Setting<>(
-        description,
-        field.label(description),
+        title,
+        field.label(title),
         property);
   }
 
@@ -315,14 +315,14 @@ public class Setting<F extends Field, P extends Property> {
   }
 
   /**
-   * Returns the description of this setting or if i18n is used, it will return the translated
-   * description in the current locale.
+   * Returns the title of this setting or if i18n is used, it will return the translated
+   * title in the current locale.
    */
-  public String getDescription() {
+  public String getTitle() {
     if (field != null) {
       return field.getLabel();
     }
-    return description;
+    return title;
   }
 
   public P valueProperty() {
@@ -366,7 +366,7 @@ public class Setting<F extends Field, P extends Property> {
    * @param breadCrumb the breadcrumb to add to this group's breadcrumb
    */
   public void addToBreadcrumb(String breadCrumb) {
-    setBreadcrumb(breadCrumb + Constants.BREADCRUMB_DELIMITER + description);
+    setBreadcrumb(breadCrumb + Constants.BREADCRUMB_DELIMITER + title);
   }
 
   public String getBreadcrumb() {

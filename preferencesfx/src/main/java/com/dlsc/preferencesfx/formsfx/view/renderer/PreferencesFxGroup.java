@@ -40,7 +40,7 @@ import javafx.beans.property.StringProperty;
 public class PreferencesFxGroup extends Group {
 
   /**
-   * The title acts as a description for the group. It is always visible to
+   * The title acts as a header for the group. It is always visible to
    * the user and tells them how the contained fields are grouped.
    * This property is translatable if a {@link TranslationService} is set on
    * the containing form.

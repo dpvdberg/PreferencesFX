@@ -83,30 +83,30 @@ public class PreferencesFxUtils {
   }
 
   /**
-   * Filters a list of {@code categories} by a given {@code description}.
+   * Filters a list of {@code categories} by a given {@code title}.
    *
    * @param categories  the list of categories to be filtered
-   * @param description to be searched for
-   * @return a list of {@code categories}, containing (ignoring case) the given {@code description}
+   * @param title to be searched for
+   * @return a list of {@code categories}, containing (ignoring case) the given {@code title}
    */
-  public static List<Category> filterCategoriesByDescription(List<Category> categories,
-                                                             String description) {
+  public static List<Category> filterCategoriesByTitle(List<Category> categories,
+                                                             String title) {
     return categories.stream()
-        .filter(category -> containsIgnoreCase(category.getDescription(), description))
+        .filter(category -> containsIgnoreCase(category.getTitle(), title))
         .collect(Collectors.toList());
   }
 
   /**
-   * Filters a list of {@code settings} by a given {@code description}.
+   * Filters a list of {@code settings} by a given {@code title}.
    *
    * @param settings    the list of settings to be filtered
-   * @param description to be searched for
-   * @return a list of {@code settings}, containing (ignoring case) the given {@code description}
+   * @param title to be searched for
+   * @return a list of {@code settings}, containing (ignoring case) the given {@code title}
    */
-  public static List<Setting> filterSettingsByDescription(List<Setting> settings,
-                                                          String description) {
+  public static List<Setting> filterSettingsByTitle(List<Setting> settings,
+                                                          String title) {
     return settings.stream()
-        .filter(setting -> containsIgnoreCase(setting.getDescription(), description))
+        .filter(setting -> containsIgnoreCase(setting.getTitle(), title))
         .collect(Collectors.toList());
   }
 
@@ -122,16 +122,16 @@ public class PreferencesFxUtils {
   }
 
   /**
-   * Filters a list of {@code groups} by a given {@code description}.
+   * Filters a list of {@code groups} by a given {@code title}.
    *
    * @param groups      the list of groups to be filtered
-   * @param description to be searched for
-   * @return a list of {@code groups}, containing (ignoring case) the given {@code description}
+   * @param title to be searched for
+   * @return a list of {@code groups}, containing (ignoring case) the given {@code title}
    */
-  public static List<Group> filterGroupsByDescription(List<Group> groups, String description) {
+  public static List<Group> filterGroupsByTitle(List<Group> groups, String title) {
     return groups.stream()
-        .filter(group -> !Strings.isNullOrEmpty(group.getDescription()))
-        .filter(group -> containsIgnoreCase(group.getDescription(), description))
+        .filter(group -> !Strings.isNullOrEmpty(group.getTitle()))
+        .filter(group -> containsIgnoreCase(group.getTitle(), title))
         .collect(Collectors.toList());
   }
 

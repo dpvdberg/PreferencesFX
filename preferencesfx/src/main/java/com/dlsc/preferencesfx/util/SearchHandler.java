@@ -62,9 +62,9 @@ public class SearchHandler {
    * If result is true, it will be shown, if the result is false, it will be hidden.
    */
   private Predicate<Category> filterPredicate = category -> {
-    // look in category description for matches
+    // look in category title for matches
     String searchText = model.getSearchText();
-    boolean categoryMatch = containsIgnoreCase(category.getDescription(), searchText);
+    boolean categoryMatch = containsIgnoreCase(category.getTitle(), searchText);
     boolean settingMatch = false;
     boolean groupMatch = false;
     if (category.getGroups() != null) {
@@ -72,12 +72,12 @@ public class SearchHandler {
       settingMatch = category.getGroups().stream()
           .map(Group::getSettings)      // get settings from groups
           .flatMap(Collection::stream)  // flatten all lists of settings to settings
-          .filter(setting -> !Strings.isNullOrEmpty(setting.getDescription()))
-          .anyMatch(setting -> containsIgnoreCase(setting.getDescription(), searchText));
+          .filter(setting -> !Strings.isNullOrEmpty(setting.getTitle()))
+          .anyMatch(setting -> containsIgnoreCase(setting.getTitle(), searchText));
       // look in groups too
       groupMatch = category.getGroups().stream()
-          .filter(group -> !Strings.isNullOrEmpty(group.getDescription()))
-          .anyMatch(group -> containsIgnoreCase(group.getDescription(), searchText));
+          .filter(group -> !Strings.isNullOrEmpty(group.getTitle()))
+          .anyMatch(group -> containsIgnoreCase(group.getTitle(), searchText));
     }
     return categoryMatch || settingMatch || groupMatch;
   };
@@ -174,11 +174,11 @@ public class SearchHandler {
 
   private void updateFilteredLists(String searchText) {
     filteredCategoriesLst =
-        PreferencesFxUtils.filterCategoriesByDescription(flatCategoriesLst, searchText);
+        PreferencesFxUtils.filterCategoriesByTitle(flatCategoriesLst, searchText);
     filteredSettingsLst =
-        PreferencesFxUtils.filterSettingsByDescription(flatSettingsLst, searchText);
+        PreferencesFxUtils.filterSettingsByTitle(flatSettingsLst, searchText);
     filteredGroupsLst =
-        PreferencesFxUtils.filterGroupsByDescription(flatGroupsLst, searchText);
+        PreferencesFxUtils.filterGroupsByTitle(flatGroupsLst, searchText);
     categoryMatches = filteredCategoriesLst.size();
     settingMatches = filteredSettingsLst.size();
     groupMatches = filteredGroupsLst.size();

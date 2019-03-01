@@ -74,7 +74,7 @@ public class CategoryController extends ScrollPane {
       displayedCategoryPresenter.setValue(getPresenter(category));
       return true;
     } else {
-      LOGGER.info("Category " + category.getDescription() + " hasn't been loaded!");
+      LOGGER.info("Category " + category.getTitle() + " hasn't been loaded!");
       return false;
     }
   }
@@ -88,7 +88,7 @@ public class CategoryController extends ScrollPane {
    */
   public boolean unloadView(Category category) {
     if (views.remove(category) == null | presenters.remove(category) == null) {
-      LOGGER.info("Category " + category.getDescription() + " doesn't exist!");
+      LOGGER.info("Category " + category.getTitle() + " doesn't exist!");
       return false;
     } else {
       return true;

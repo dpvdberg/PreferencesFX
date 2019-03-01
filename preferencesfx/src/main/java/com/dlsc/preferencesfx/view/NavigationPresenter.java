@@ -142,7 +142,7 @@ public class NavigationPresenter implements Presenter {
   }
 
   /**
-   * Makes the TreeItems' text update when the description of a Category changes (due to i18n).
+   * Makes the TreeItems' text update when the title of a Category changes (due to i18n).
    */
   public void setupCellValueFactory() {
     navigationView.treeView.setCellFactory(param -> new TreeCell<Category>() {
@@ -154,7 +154,7 @@ public class NavigationPresenter implements Presenter {
           setText(null);
           setGraphic(null);
         } else {
-          textProperty().bind(category.descriptionProperty());
+          textProperty().bind(category.titleProperty());
           setGraphic(category.getItemIcon());
         }
       }

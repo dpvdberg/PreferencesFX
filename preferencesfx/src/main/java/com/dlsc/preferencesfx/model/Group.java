@@ -23,31 +23,31 @@ public class Group {
       LoggerFactory.getLogger(Group.class.getName());
 
   private static final String MARKED_STYLE_CLASS = "group-marked";
-  private String description;
+  private String title;
   private List<Setting> settings;
   private PreferencesFxGroup preferencesGroup;
   private boolean marked = false;
   private final EventHandler<MouseEvent> unmarker = event -> unmark();
   private final StringProperty breadcrumb = new SimpleStringProperty("");
 
-  private Group(String description, Setting... settings) {
-    this.description = description;
+  private Group(String title, Setting... settings) {
+    this.title = title;
     this.settings = Arrays.asList(settings);
   }
 
   /**
-   * Constructs a new group with a {@code description} and {@code settings}.
+   * Constructs a new group with a {@code title} and {@code settings}.
    *
-   * @param description the title of this group
+   * @param title the title of this group
    * @param settings    the settings that belong to this group
    * @return this object for chaining with the fluent API
    */
-  public static Group of(String description, Setting... settings) {
-    return new Group(description, settings);
+  public static Group of(String title, Setting... settings) {
+    return new Group(title, settings);
   }
 
   /**
-   * Constructs a new group with {@code settings}, without a {@code description}.
+   * Constructs a new group with {@code settings}, without a {@code title}.
    *
    * @param settings the settings that belong to this group
    * @return this object for chaining with the fluent API
@@ -57,25 +57,25 @@ public class Group {
   }
 
   /**
-   * Sets a {@code description} for this group.
+   * Sets a {@code title} for this group.
    *
-   * @param description the title of this group
+   * @param title the title of this group
    * @return this object for chaining with the fluent API
    */
-  public Group description(String description) {
-    this.description = description;
+  public Group title(String title) {
+    this.title = title;
     return this;
   }
 
   /**
-   * Returns the description of this group or if i18n is used, it will return the translated
-   * description in the current locale.
+   * Returns the title of this group or if i18n is used, it will return the translated
+   * title in the current locale.
    */
-  public String getDescription() {
+  public String getTitle() {
     if (preferencesGroup != null) {
       return preferencesGroup.getTitle();
     }
-    return description;
+    return title;
   }
 
   public List<Setting> getSettings() {
@@ -126,7 +126,7 @@ public class Group {
    * @param breadCrumb the breadcrumb to add to this group's breadcrumb
    */
   public void addToBreadcrumb(String breadCrumb) {
-    setBreadcrumb(breadCrumb + Constants.BREADCRUMB_DELIMITER + description);
+    setBreadcrumb(breadCrumb + Constants.BREADCRUMB_DELIMITER + title);
     settings.forEach(setting -> setting.addToBreadcrumb(getBreadcrumb()));
   }
 

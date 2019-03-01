@@ -63,17 +63,17 @@ public class CategoryPresenter implements Presenter {
 
   /**
    * Updates the internal FormsFX form with the most current TranslationService.
-   * Makes sure the group descriptions are updated with changing locale.
+   * Makes sure the group titles are updated with changing locale.
    */
   private void addI18nListener() {
     model.translationServiceProperty().addListener((observable, oldValue, newValue) -> {
       if (oldValue != newValue) {
         form.i18n(newValue);
-        newValue.addListener(categoryModel::updateGroupDescriptions);
+        newValue.addListener(categoryModel::updateGroupTitles);
         if (!Objects.equals(breadCrumbPresenter, null)) {
           newValue.addListener(breadCrumbPresenter::setupBreadCrumbBar);
         }
-        categoryModel.updateGroupDescriptions();
+        categoryModel.updateGroupTitles();
       }
     });
   }
@@ -98,7 +98,7 @@ public class CategoryPresenter implements Presenter {
     // create PreferenceGroups from Groups
     for (int i = 0; i < groups.size(); i++) {
       PreferencesFxGroup preferencesGroup =
-          (PreferencesFxGroup) PreferencesFxGroup.of().title(groups.get(i).getDescription());
+          (PreferencesFxGroup) PreferencesFxGroup.of().title(groups.get(i).getTitle());
       groups.get(i).setPreferencesGroup(preferencesGroup);
       formGroups.add(preferencesGroup);
       // fill groups with settings (as FormsFX fields)

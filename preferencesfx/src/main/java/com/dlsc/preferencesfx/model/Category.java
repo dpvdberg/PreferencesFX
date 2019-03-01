@@ -27,8 +27,8 @@ public class Category {
   private static final Logger LOGGER =
       LoggerFactory.getLogger(Category.class.getName());
 
-  private StringProperty description = new SimpleStringProperty();
-  private StringProperty descriptionKey = new SimpleStringProperty();
+  private StringProperty title = new SimpleStringProperty();
+  private StringProperty titleKey = new SimpleStringProperty();
   private List<Group> groups;
   private List<Category> children;
   private final StringProperty breadcrumb = new SimpleStringProperty("");
@@ -37,26 +37,26 @@ public class Category {
   /**
    * Creates a category without groups, for top-level categories without any settings.
    *
-   * @param description Category name, for display in {@link CategoryView}
+   * @param title Category name, for display in {@link CategoryView}
    */
-  private Category(String description) {
-    descriptionKey.setValue(description);
+  private Category(String title) {
+    titleKey.setValue(title);
     translate(null);
-    setBreadcrumb(description);
+    setBreadcrumb(title);
   }
 
-  private Category(String description, Group... groups) {
-    this(description);
+  private Category(String title, Group... groups) {
+    this(title);
     this.groups = Arrays.asList(groups);
   }
 
-  private Category(String description, Node itemIcon) {
-    this(description);
+  private Category(String title, Node itemIcon) {
+    this(title);
     this.itemIcon = itemIcon;
   }
 
-  private Category(String description, Node itemIcon, Group... groups) {
-    this(description, groups);
+  private Category(String title, Node itemIcon, Group... groups) {
+    this(title, groups);
     this.itemIcon = itemIcon;
   }
 
@@ -64,69 +64,69 @@ public class Category {
    * Creates an empty category.
    * Can be used for top-level categories without {@link Setting}.
    *
-   * @param description Category name, for display in {@link CategoryView}
+   * @param title Category name, for display in {@link CategoryView}
    * @return initialized Category object
    */
-  public static Category of(String description) {
-    return new Category(description);
+  public static Category of(String title) {
+    return new Category(title);
   }
 
   /**
    * Creates a new category from groups.
    *
-   * @param description Category name, for display in {@link CategoryView}
+   * @param title Category name, for display in {@link CategoryView}
    * @param groups      {@link Group} with {@link Setting} to be shown in the {@link CategoryView}
    * @return initialized Category object
    */
-  public static Category of(String description, Group... groups) {
-    return new Category(description, groups);
+  public static Category of(String title, Group... groups) {
+    return new Category(title, groups);
   }
 
   /**
    * Creates a new category from settings, if the settings shouldn't be individually grouped.
    *
-   * @param description Category name, for display in {@link CategoryView}
+   * @param title Category name, for display in {@link CategoryView}
    * @param settings    {@link Setting} to be shown in the {@link CategoryView}
    * @return initialized Category object
    */
-  public static Category of(String description, Setting... settings) {
-    return new Category(description, Group.of(settings));
+  public static Category of(String title, Setting... settings) {
+    return new Category(title, Group.of(settings));
   }
 
   /**
    * Creates an empty category.
    * Can be used for top-level categories without {@link Setting}.
    *
-   * @param description Category name, for display in {@link CategoryView}
+   * @param title Category name, for display in {@link CategoryView}
    * @param itemIcon    Icon to be shown next to the category name
    * @return initialized Category object
    */
-  public static Category of(String description, Node itemIcon) {
-    return new Category(description, itemIcon);
+  public static Category of(String title, Node itemIcon) {
+    return new Category(title, itemIcon);
   }
 
   /**
    * Creates a new category from groups.
    *
-   * @param description Category name, for display in {@link CategoryView}
+   * @param title Category name, for display in {@link CategoryView}
    * @param itemIcon    Icon to be shown next to the category name
    * @param groups      {@link Group} with {@link Setting} to be shown in the {@link CategoryView}
    * @return initialized Category object
    */
-  public static Category of(String description, Node itemIcon, Group... groups) {
-    return new Category(description, itemIcon, groups);
+  public static Category of(String title, Node itemIcon, Group... groups) {
+    return new Category(title, itemIcon, groups);
   }
 
   /**
    * Creates a new category from settings, if the settings shouldn't be individually grouped.
    *
-   * @param description Category name, for display in {@link CategoryView}
+   * @param title Category name, for display in {@link CategoryView}
    * @param itemIcon    Icon to be shown next to the category name
    * @param settings    {@link Setting} to be shown in the {@link CategoryView}
    * @return initialized Category object
    */
-  public static Category of(String description, Node itemIcon, Setting... settings) {
-    return new Category(description, itemIcon, Group.of(settings));
+  public static Category of(String title, Node itemIcon, Setting... settings) {
+    return new Category(title, itemIcon, Group.of(settings));
   }
 
   /**
@@ -147,7 +147,7 @@ public class Category {
    */
   public void createBreadcrumbs(List<Category> categories) {
     categories.forEach(category -> {
-      category.setBreadcrumb(getBreadcrumb() + BREADCRUMB_DELIMITER + category.getDescription());
+      category.setBreadcrumb(getBreadcrumb() + BREADCRUMB_DELIMITER + category.getTitle());
       if (!Objects.equals(category.getGroups(), null)) {
         category.getGroups().forEach(group -> group.addToBreadcrumb(getBreadcrumb()));
       }
@@ -199,26 +199,26 @@ public class Category {
    */
   public void translate(TranslationService translationService) {
     if (translationService == null) {
-      description.setValue(descriptionKey.getValue());
+      title.setValue(titleKey.getValue());
       return;
     }
 
-    if (!Strings.isNullOrEmpty(descriptionKey.get())) {
-      description.setValue(translationService.translate(descriptionKey.get()));
+    if (!Strings.isNullOrEmpty(titleKey.get())) {
+      title.setValue(translationService.translate(titleKey.get()));
     }
   }
 
   /**
-   * Updates the group descriptions when translation changes.
+   * Updates the group titles when translation changes.
    */
-  public void updateGroupDescriptions() {
+  public void updateGroupTitles() {
     if (groups != null) {
       groups.forEach(group -> group.getPreferencesGroup().translate());
     }
   }
 
-  public String getDescription() {
-    return description.get();
+  public String getTitle() {
+    return title.get();
   }
 
   public List<Group> getGroups() {
@@ -231,7 +231,7 @@ public class Category {
 
   @Override
   public String toString() {
-    return description.get();
+    return title.get();
   }
 
   public String getBreadcrumb() {
@@ -246,8 +246,8 @@ public class Category {
     this.breadcrumb.set(breadcrumb);
   }
 
-  public ReadOnlyStringProperty descriptionProperty() {
-    return description;
+  public ReadOnlyStringProperty titleProperty() {
+    return title;
   }
 
   public Node getItemIcon() {
