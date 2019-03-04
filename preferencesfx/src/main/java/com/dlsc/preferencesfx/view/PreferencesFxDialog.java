@@ -6,10 +6,8 @@ import com.dlsc.preferencesfx.history.view.HistoryDialog;
 import com.dlsc.preferencesfx.model.PreferencesFxModel;
 import com.dlsc.preferencesfx.util.Constants;
 import com.dlsc.preferencesfx.util.StorageHandler;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -35,8 +33,8 @@ public class PreferencesFxDialog extends DialogPane {
   private StorageHandler storageHandler;
   private boolean persistWindowState;
   private boolean saveSettings;
-  private ButtonType closeWindowBtnType = ButtonType.CLOSE;
-  private ButtonType cancelBtnType = ButtonType.CANCEL;
+  private final ButtonType closeWindowBtnType = new ButtonType("Save", ButtonBar.ButtonData.CANCEL_CLOSE);
+  private final ButtonType cancelBtnType = ButtonType.CANCEL;
 
   /**
    * Initializes the {@link DialogPane} which shows the PreferencesFX window.
@@ -101,10 +99,12 @@ public class PreferencesFxDialog extends DialogPane {
         LOGGER.trace("Dialog - Cancel Button was pressed");
         model.discardChanges();
       } else {
-        LOGGER.trace("Dialog - Close Button or 'x' was pressed");if (persistWindowState) {
-        saveWindowState();
+        LOGGER.trace("Dialog - Close Button or 'x' was pressed");
+        if (persistWindowState) {
+          saveWindowState();
+        }
+        model.saveSettings();
       }
-      model.saveSettings();}
     });
   }
 
