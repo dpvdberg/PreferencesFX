@@ -24,15 +24,18 @@ import org.slf4j.LoggerFactory;
  */
 public class PreferencesFxDialog extends DialogPane {
   private static final Logger LOGGER =
-      LoggerFactory.getLogger(PreferencesFxDialog.class.getName());
+          LoggerFactory.getLogger(PreferencesFxDialog.class.getName());
 
   private PreferencesFxModel model;
   private PreferencesFxView preferencesFxView;
 
   private Dialog dialog = new Dialog();
   private StorageHandler storageHandler;
+  private final boolean allowReset;
+  private final Runnable resetRunnable;
   private boolean persistWindowState;
   private boolean saveSettings;
+  private final ButtonType resetBtnType = new ButtonType("Reset", ButtonBar.ButtonData.CANCEL_CLOSE);
   private final ButtonType closeWindowBtnType = new ButtonType("Save", ButtonBar.ButtonData.CANCEL_CLOSE);
   private final ButtonType cancelBtnType = ButtonType.CANCEL;
 
@@ -42,12 +45,14 @@ public class PreferencesFxDialog extends DialogPane {
    * @param model             the model of PreferencesFX
    * @param preferencesFxView the master view to be display in this {@link DialogPane}
    */
-  public PreferencesFxDialog(PreferencesFxModel model, PreferencesFxView preferencesFxView) {
+  public PreferencesFxDialog(PreferencesFxModel model, PreferencesFxView preferencesFxView, boolean allowReset, Runnable resetRunnable) {
     this.model = model;
     this.preferencesFxView = preferencesFxView;
     persistWindowState = model.isPersistWindowState();
     saveSettings = model.isSaveSettings();
     storageHandler = model.getStorageHandler();
+    this.allowReset = allowReset;
+    this.resetRunnable = resetRunnable;
     model.loadSettingValues();
     layoutForm();
     setupDialogClose();
@@ -86,6 +91,9 @@ public class PreferencesFxDialog extends DialogPane {
   private void layoutForm() {
     dialog.setTitle("Preferences");
     dialog.setResizable(true);
+    if (allowReset) {
+      getButtonTypes().add(resetBtnType);
+    }
     getButtonTypes().addAll(closeWindowBtnType, cancelBtnType);
     dialog.setDialogPane(this);
     setContent(preferencesFxView);
@@ -98,6 +106,9 @@ public class PreferencesFxDialog extends DialogPane {
       if (ButtonType.CANCEL.equals(resultButton)) {
         LOGGER.trace("Dialog - Cancel Button was pressed");
         model.discardChanges();
+      } else if (allowReset && resetBtnType.equals(resultButton)) {
+        resetRunnable.run();
+        e.consume();
       } else {
         LOGGER.trace("Dialog - Close Button or 'x' was pressed");
         if (persistWindowState) {
@@ -135,7 +146,7 @@ public class PreferencesFxDialog extends DialogPane {
 
   private void setupDebugHistoryTable() {
     final KeyCombination keyCombination =
-        new KeyCodeCombination(KeyCode.H, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN);
+            new KeyCodeCombination(KeyCode.H, KeyCombination.SHORTCUT_DOWN, KeyCombination.SHIFT_DOWN);
     preferencesFxView.getScene().addEventHandler(KeyEvent.KEY_RELEASED, event -> {
       if (keyCombination.match(event)) {
         LOGGER.trace("Opened History Debug View");

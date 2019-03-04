@@ -2,7 +2,11 @@ package com.dlsc.preferencesfx.standard;
 
 import com.dlsc.preferencesfx.AppStarter;
 import com.dlsc.preferencesfx.PreferencesFx;
+
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
+
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -67,45 +71,45 @@ public class DemoView extends VBox {
 
     // VBox with values
     VBox valueBox = new VBox(
-        welcomeLbl,
-        brightnessLbl,
-        nightModeLbl,
-        scalingLbl,
-        screenNameLbl,
-        resolutionLbl,
-        orientationLbl,
-        favoritesLbl,
-        fontSizeLbl,
-        lineSpacingLbl,
-        favoriteNumberLbl
+            welcomeLbl,
+            brightnessLbl,
+            nightModeLbl,
+            scalingLbl,
+            screenNameLbl,
+            resolutionLbl,
+            orientationLbl,
+            favoritesLbl,
+            fontSizeLbl,
+            lineSpacingLbl,
+            favoriteNumberLbl
     );
     valueBox.setSpacing(20);
     valueBox.setPadding(new Insets(20, 0, 0, 20));
 
     // VBox with descriptions
     VBox descriptionBox = new VBox(
-        new Label("Welcome Text:"),
-        new Label("Brightness:"),
-        new Label("Night mode:"),
-        new Label("Scaling:"),
-        new Label("Screen name:"),
-        new Label("Resolution:"),
-        new Label("Orientation:"),
-        new Label("Favorites:"),
-        new Label("Font Size:"),
-        new Label("Line Spacing:"),
-        new Label("Favorite Number:")
+            new Label("Welcome Text:"),
+            new Label("Brightness:"),
+            new Label("Night mode:"),
+            new Label("Scaling:"),
+            new Label("Screen name:"),
+            new Label("Resolution:"),
+            new Label("Orientation:"),
+            new Label("Favorites:"),
+            new Label("Font Size:"),
+            new Label("Line Spacing:"),
+            new Label("Favorite Number:")
     );
     descriptionBox.setSpacing(20);
     descriptionBox.setPadding(new Insets(20, 0, 0, 20));
 
     // Put everything together
     getChildren().addAll(
-        menuBar,
-        new HBox(
-            descriptionBox,
-            valueBox
-        )
+            menuBar,
+            new HBox(
+                    descriptionBox,
+                    valueBox
+            )
     );
 
     // Styling
@@ -124,8 +128,8 @@ public class DemoView extends VBox {
     resolutionLbl.textProperty().bind(rootPane.resolutionSelection);
     orientationLbl.textProperty().bind(rootPane.orientationSelection);
     favoritesLbl.textProperty().bind(Bindings.createStringBinding(
-        () -> rootPane.favoritesSelection.stream().collect(Collectors.joining(", ")),
-        rootPane.favoritesSelection
+            () -> rootPane.favoritesSelection.stream().collect(Collectors.joining(", ")),
+            rootPane.favoritesSelection
     ));
     fontSizeLbl.textProperty().bind(rootPane.fontSize.asString());
     lineSpacingLbl.textProperty().bind(rootPane.lineSpacing.asString());
@@ -133,7 +137,13 @@ public class DemoView extends VBox {
   }
 
   private void setupEventHandlers() {
-    preferencesMenuItem.setOnAction(e -> preferencesFx.show(true));
+    preferencesMenuItem.setOnAction(e -> preferencesFx.show(true, true, () -> {
+      try {
+        Preferences.userNodeForPackage(AppStarter.class).clear();
+      } catch (BackingStoreException e1) {
+        // ignore
+      }
+    }));
   }
 
   private void setupListeners() {

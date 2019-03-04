@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  */
 public class PreferencesFx {
   private static final Logger LOGGER =
-      LoggerFactory.getLogger(PreferencesFx.class.getName());
+          LoggerFactory.getLogger(PreferencesFx.class.getName());
 
   private PreferencesFxModel preferencesFxModel;
 
@@ -55,7 +55,7 @@ public class PreferencesFx {
   private PreferencesFx(StorageHandler storageHandler, Category... categories) {
     // asciidoctor Documentation - tag::testMock[]
     preferencesFxModel = new PreferencesFxModel(
-        storageHandler, new SearchHandler(), new History(), categories
+            storageHandler, new SearchHandler(), new History(), categories
     );
     // asciidoctor Documentation - end::testMock[]
     init();
@@ -80,7 +80,7 @@ public class PreferencesFx {
     navigationPresenter = new NavigationPresenter(preferencesFxModel, navigationView);
 
     preferencesFxView = new PreferencesFxView(
-        preferencesFxModel, navigationView, breadCrumbView, categoryController
+            preferencesFxModel, navigationView, breadCrumbView, categoryController
     );
     preferencesFxPresenter = new PreferencesFxPresenter(preferencesFxModel, preferencesFxView);
   }
@@ -116,7 +116,7 @@ public class PreferencesFx {
     preferencesFxModel.getFlatCategoriesLst().forEach(category -> {
       CategoryView categoryView = new CategoryView(preferencesFxModel, category);
       CategoryPresenter categoryPresenter = new CategoryPresenter(
-          preferencesFxModel, category, categoryView, breadCrumbPresenter
+              preferencesFxModel, category, categoryView, breadCrumbPresenter
       );
       categoryController.addView(category, categoryView, categoryPresenter);
     });
@@ -136,7 +136,16 @@ public class PreferencesFx {
    * @param modal window or not modal, that's the question.
    */
   public void show(boolean modal) {
-    new PreferencesFxDialog(preferencesFxModel, preferencesFxView).show(modal);
+    show(modal, false, null);
+  }
+
+  /**
+   * Show the PreferencesFX dialog.
+   *
+   * @param modal window or not modal, that's the question.
+   */
+  public void show(boolean modal, boolean allowReset, Runnable resetRunnable) {
+    new PreferencesFxDialog(preferencesFxModel, preferencesFxView, allowReset, resetRunnable).show(modal);
   }
 
   /**
