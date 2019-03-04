@@ -158,15 +158,6 @@
                     <violationSeverity>warning</violationSeverity>
                     <excludes>**/module-info.java</excludes>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>verify-style</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

@@ -70,7 +70,7 @@ public class SimpleIntegerControl extends SimpleNumberControl<IntegerField, Inte
     try {
       Integer.parseInt(editableSpinner.getEditor().getText());
     } catch (NumberFormatException ex) {
-      editableSpinner.getEditor().setText("0");
+      editableSpinner.getEditor().setText(editableSpinner.getValue().toString());
     }
   }
 
