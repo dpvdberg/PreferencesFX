@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  */
 public class CategoryView extends StackPane implements View {
   private static final Logger LOGGER =
-      LoggerFactory.getLogger(CategoryView.class.getName());
+          LoggerFactory.getLogger(CategoryView.class.getName());
 
   private PreferencesFxModel model;
   private Category categoryModel;
@@ -41,11 +41,11 @@ public class CategoryView extends StackPane implements View {
    *
    * @param form to be rendered using the {@link PreferencesFxFormRenderer}
    * @implNote This can't be done in the constructor, since the form has to be initialized by the
-   *           corresponding presenter first.
+   * corresponding presenter first.
    */
   void initializeFormRenderer(Form form) {
     getChildren().clear();
-    preferencesFormRenderer = new PreferencesFxFormRenderer(form);
+    preferencesFormRenderer = new PreferencesFxFormRenderer(form, categoryModel.getDescription(), categoryModel.getDescriptionStyle());
     getChildren().add(preferencesFormRenderer);
   }
 

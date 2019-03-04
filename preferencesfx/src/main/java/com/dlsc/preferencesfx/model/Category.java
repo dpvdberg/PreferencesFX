@@ -33,6 +33,8 @@ public class Category {
   private List<Category> children;
   private final StringProperty breadcrumb = new SimpleStringProperty("");
   private Node itemIcon;
+  private String description = null;
+  private String descriptionStyle = null;
 
   /**
    * Creates a category without groups, for top-level categories without any settings.
@@ -137,6 +139,16 @@ public class Category {
    */
   public Category subCategories(Category... children) {
     this.children = Arrays.asList(children);
+    return this;
+  }
+
+  public Category withDescription(String description) {
+    this.description = description;
+    return this;
+  }
+
+  public Category withDescriptionStyle(String descriptionStyle) {
+    this.descriptionStyle = descriptionStyle;
     return this;
   }
 
@@ -252,5 +264,13 @@ public class Category {
 
   public Node getItemIcon() {
     return itemIcon;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public String getDescriptionStyle() {
+    return descriptionStyle;
   }
 }

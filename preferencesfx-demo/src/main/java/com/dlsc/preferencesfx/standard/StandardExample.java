@@ -97,7 +97,7 @@ public class StandardExample extends StackPane {
                                     .withDescription("Don't make it hurt your eyes."),
                             Setting.of("Night mode", nightMode)
                     )
-            ),
+            ).withDescription("Category description").withDescriptionStyle("-fx-text-fill: red"),
             Category.of("Screen")
                     .subCategories(
                             Category.of("Scaling & Ordering",

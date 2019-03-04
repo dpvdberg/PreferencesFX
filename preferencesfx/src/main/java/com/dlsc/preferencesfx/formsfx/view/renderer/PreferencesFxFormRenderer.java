@@ -3,10 +3,13 @@ package com.dlsc.preferencesfx.formsfx.view.renderer;
 import com.dlsc.formsfx.model.structure.Form;
 import com.dlsc.formsfx.view.util.ViewMixin;
 import com.dlsc.preferencesfx.model.Category;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import javafx.geometry.Insets;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -25,6 +28,9 @@ public class PreferencesFxFormRenderer extends GridPane implements ViewMixin {
 
   private Form form;
   private List<PreferencesFxGroupRenderer> groups = new ArrayList<>();
+  private String description;
+  private String descriptionStyle;
+
 
   /**
    * This is the constructor to pass over data.
@@ -32,7 +38,18 @@ public class PreferencesFxFormRenderer extends GridPane implements ViewMixin {
    * @param form The form which gets rendered.
    */
   public PreferencesFxFormRenderer(Form form) {
+    this(form, null, null);
+  }
+
+  /**
+   * This is the constructor to pass over data.
+   *
+   * @param form The form which gets rendered.
+   */
+  public PreferencesFxFormRenderer(Form form, String description, String descriptionStyle) {
     this.form = form;
+    this.description = description;
+    this.descriptionStyle = descriptionStyle;
     init();
   }
 
@@ -46,8 +63,15 @@ public class PreferencesFxFormRenderer extends GridPane implements ViewMixin {
    */
   @Override
   public void initializeParts() {
+    if (description != null) {
+      Label label = new Label(description);
+      if (descriptionStyle != null) {
+        label.setStyle(descriptionStyle);
+      }
+      this.add(label, 0, 0, 2, 1);
+    }
     groups = form.getGroups().stream().map(
-        g -> new PreferencesFxGroupRenderer((PreferencesFxGroup) g, this)
+            g -> new PreferencesFxGroupRenderer((PreferencesFxGroup) g, this)
     ).collect(Collectors.toList());
   }
 
