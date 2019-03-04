@@ -149,7 +149,7 @@ public class ExtendedExample extends StackPane {
                         Setting.of("Screen name", screenName),
                         Setting.of("Resolution", resolutionItems, resolutionSelection),
                         Setting.of("Orientation", orientationItems, orientationSelection)
-                    ).description("Screen Options"),
+                    ).title("Screen Options"),
                     Group.of(
                         Setting.of("Font Size", fontSize, 6, 36),
                         Setting.of("Line Spacing", lineSpacing, 0, 3, 1)

@@ -222,3 +222,8 @@
     -fx-background-color: rgba(255, 255, 0, 0.2);
     -fx-background-insets: -0.5em -999999em -0.5em -0.5em;
 }
+
+.field-label-description,
+.field-value-description {
+    -fx-text-fill: gray;
+}

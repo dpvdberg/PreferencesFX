@@ -107,7 +107,7 @@ public class InternationalizedExample extends StackPane {
                         Setting.of("screen_name", screenName),
                         Setting.of("resolution", resolutionItems, resolutionSelection),
                         Setting.of("orientation", orientationItems, orientationSelection)
-                    ).description("screen_options"),
+                    ).title("screen_options"),
                     Group.of(
                         Setting.of("font_size", fontSize, 6, 36),
                         Setting.of("line_spacing", lineSpacing, 0, 3, 1)

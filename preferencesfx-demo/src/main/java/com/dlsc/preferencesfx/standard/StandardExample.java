@@ -2,7 +2,9 @@ package com.dlsc.preferencesfx.standard;
 
 import com.dlsc.formsfx.model.structure.Field;
 import com.dlsc.formsfx.model.structure.IntegerField;
+import com.dlsc.formsfx.model.validators.CustomValidator;
 import com.dlsc.formsfx.model.validators.DoubleRangeValidator;
+import com.dlsc.formsfx.model.validators.Validator;
 import com.dlsc.preferencesfx.AppStarter;
 import com.dlsc.preferencesfx.PreferencesFx;
 import com.dlsc.preferencesfx.formsfx.view.controls.IntegerSliderControl;
@@ -85,9 +87,12 @@ public class StandardExample extends StackPane {
         Category.of("General",
             Group.of("Greeting",
                 Setting.of("Welcome Text", welcomeText)
+                        .validate(CustomValidator.forPredicate(s -> !s.equals("ok"), "Cannot be ok"))
+                        .withDescription("test")
             ),
             Group.of("Display",
-                Setting.of("Brightness", brightness),
+                Setting.of("Brightness", brightness)
+                        .withDescription("Don't make it hurt your eyes."),
                 Setting.of("Night mode", nightMode)
             )
         ),
@@ -102,7 +107,7 @@ public class StandardExample extends StackPane {
                         Setting.of("Screen name", screenName),
                         Setting.of("Resolution", resolutionItems, resolutionSelection),
                         Setting.of("Orientation", orientationItems, orientationSelection)
-                    ).description("Screen Options"),
+                    ).title("Screen Options"),
                     Group.of(
                         Setting.of("Font Size", fontSize, 6, 36),
                         Setting.of("Line Spacing", lineSpacing, 0, 3, 1)
