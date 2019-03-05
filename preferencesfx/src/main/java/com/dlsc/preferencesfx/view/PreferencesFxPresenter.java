@@ -42,26 +42,6 @@ public class PreferencesFxPresenter implements Presenter {
    * {@inheritDoc}
    */
   @Override
-  public void setupEventHandlers() {
-    // As the scene is null here, listen to scene changes and make sure
-    // that when the window is closed, the settings are saved beforehand.
-    preferencesFxView.sceneProperty().addListener((observable, oldScene, newScene) -> {
-      LOGGER.trace("new Scene: " + newScene);
-      if (newScene != null) {
-        LOGGER.trace("addEventHandler on Window close request to save settings");
-        newScene.getWindow()
-            .addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
-              LOGGER.trace("saveSettings because of WINDOW_CLOSE_REQUEST");
-              model.saveSettings();
-            });
-      }
-    });
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
   public void setupValueChangedListeners() {
     // When the displayedCategory in the model changes, set the view in the CategoryController
     preferencesFxView.categoryController.addListener(model.displayedCategoryProperty());
