@@ -1,12 +1,11 @@
 package com.dlsc.preferencesfx.view;
 
 import com.dlsc.preferencesfx.PreferencesFx;
-import com.dlsc.preferencesfx.history.History;
 import com.dlsc.preferencesfx.history.view.HistoryDialog;
 import com.dlsc.preferencesfx.model.PreferencesFxModel;
 import com.dlsc.preferencesfx.util.Constants;
 import com.dlsc.preferencesfx.util.StorageHandler;
-import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -34,9 +33,8 @@ public class PreferencesFxDialog extends DialogPane {
   private final boolean allowReset;
   private final Runnable resetRunnable;
   private boolean persistWindowState;
-  private boolean saveSettings;
-  private final ButtonType resetBtnType = new ButtonType("Reset", ButtonBar.ButtonData.CANCEL_CLOSE);
-  private final ButtonType closeWindowBtnType = new ButtonType("Save", ButtonBar.ButtonData.CANCEL_CLOSE);
+  private final ButtonType resetBtnType = new ButtonType("Reset");
+  private final ButtonType saveBtnType = new ButtonType("Save");
   private final ButtonType cancelBtnType = ButtonType.CANCEL;
 
   /**
@@ -48,9 +46,8 @@ public class PreferencesFxDialog extends DialogPane {
   public PreferencesFxDialog(PreferencesFxModel model, PreferencesFxView preferencesFxView, boolean allowReset, Runnable resetRunnable) {
     this.model = model;
     this.preferencesFxView = preferencesFxView;
-    persistWindowState = model.isPersistWindowState();
-    saveSettings = model.isSaveSettings();
-    storageHandler = model.getStorageHandler();
+    this.persistWindowState = model.isPersistWindowState();
+    this.storageHandler = model.getStorageHandler();
     this.allowReset = allowReset;
     this.resetRunnable = resetRunnable;
     model.loadSettingValues();
@@ -94,7 +91,8 @@ public class PreferencesFxDialog extends DialogPane {
     if (allowReset) {
       getButtonTypes().add(resetBtnType);
     }
-    getButtonTypes().addAll(closeWindowBtnType, cancelBtnType);
+    getButtonTypes().addAll(saveBtnType, cancelBtnType);
+
     dialog.setDialogPane(this);
     setContent(preferencesFxView);
   }
@@ -103,7 +101,7 @@ public class PreferencesFxDialog extends DialogPane {
     dialog.setOnCloseRequest(e -> {
       LOGGER.trace("Closing because of dialog close request");
       ButtonType resultButton = (ButtonType) dialog.resultProperty().getValue();
-      if (ButtonType.CANCEL.equals(resultButton)) {
+      if (cancelBtnType.equals(resultButton)) {
         LOGGER.trace("Dialog - Cancel Button was pressed");
         model.discardChanges();
       } else if (allowReset && resetBtnType.equals(resultButton)) {
@@ -157,10 +155,17 @@ public class PreferencesFxDialog extends DialogPane {
 
   private void setupButtons() {
     LOGGER.trace("Setting Buttons up");
-    final Button closeBtn = (Button) lookupButton(closeWindowBtnType);
+    final Button closeBtn = (Button) lookupButton(saveBtnType);
     final Button cancelBtn = (Button) lookupButton(cancelBtnType);
 
     cancelBtn.visibleProperty().bind(model.buttonsVisibleProperty());
     closeBtn.visibleProperty().bind(model.buttonsVisibleProperty());
+  }
+
+  @Override
+  protected Node createButtonBar() {
+    ButtonBar bar = (ButtonBar)super.createButtonBar();
+    bar.setButtonOrder(ButtonBar.BUTTON_ORDER_NONE);
+    return bar;
   }
 }
